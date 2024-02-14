@@ -32,6 +32,23 @@ namespace MultiplexEx
                 Response.Write("Connessione al database OK");
                 SqlCommand cmdInsert = new SqlCommand($"INSERT into Prenotati (NomeCliente, CognomeCliente, Sala, TipoBiglietto) VALUES ('{TxtName.Text}', '{TxtSurname.Text}', '{ReservationRoom.Text}', '{TicketType.Text}')",conn);
                 int affectedRow = cmdInsert.ExecuteNonQuery();
+
+                SqlCommand cmdSalaNord = new SqlCommand(@"SELECT COUNT(*) as PrenotatiNord FROM Prenotati where Sala = 'SALA NORD'");
+                //SqlCommand cmdSalaEst = new SqlCommand(@"SELECT COUNT(*) FROM Prenotati where Sala = 'SALA EST'");
+                //SqlCommand cmdSalaSud = new SqlCommand(@"SELECT COUNT(*) FROM Prenotati where Sala = 'SALA SUD'");
+
+                SqlDataReader sqlDataReader1 = cmdSalaNord.ExecuteReader();
+                //SqlDataReader sqlDataReader2 = cmdSalaEst.ExecuteReader();
+                //SqlDataReader sqlDataReader3 = cmdSalaSud.ExecuteReader();
+
+                if(sqlDataReader1.HasRows)
+                {
+                    while(sqlDataReader1.Read())
+                    {
+                       LabelNord.Text = $"{sqlDataReader1["PrenotatiNord"]}";
+                    }
+                    
+                }
             }
             catch
             {
